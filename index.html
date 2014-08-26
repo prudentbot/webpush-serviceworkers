@@ -1,0 +1,41 @@
+<html>
+    <body>
+        <p>Content></p>
+        <script>
+          var start = function(){
+            console.log('started');
+            if (!navigator.serviceWorker.active) {
+                navigator.serviceWorker.register('/service.js').then(function(reg) {
+                  console.log(reg);
+                  var p = reg.pushRegistrationManager.register()
+                  p.then(
+                    function(success){
+                      console.log(success);
+                    },
+                    function(error){
+                      console.log(error);
+                    }
+                  )
+                  console.log(navigator.serviceWorker.installing);
+                  setTimeout(function(e) {
+                    console.log(navigator.serviceWorker.current);
+                  }, 5000);
+                }, function(e) {
+                  console.log(e);
+                });
+            } else {
+              console.log("Already have active serviceWorker " + navigator.serviceWorker.active);
+            }
+          }
+          var unregister = function(){
+            navigator.serviceWorker.unregister();
+          }
+        </script>
+
+        <button onclick="start()">Start</button>
+        <button onclick="unregister()">Unregister</button>
+
+        <!--iframe src="/sub/index.html"> </iframe>
+        <script src="/fakescript.js"> </script-->
+    </body>
+</html>
